@@ -5,17 +5,17 @@ Expects the yoga repo to be cloned at the root (see `build.rs`).
 #### Running the "C" example:
 
 ```rust
-let root = yoga::Node::new();
+let mut root = yoga::Node::new();
 root.set_width(500.0);
 root.set_height(120.0);
 root.set_flex_direction(yoga::FlexDirection::Row);
 root.set_padding(yoga::Edge::All, 20.0);
 
-let image = yoga::Node::new();
+let mut image = yoga::Node::new();
 image.set_width(80.0);
 image.set_margin(yoga::Edge::End, 20.0);
 
-let text = yoga::Node::new();
+let mut text = yoga::Node::new();
 text.set_height(25.0);
 text.set_align_self(yoga::Align::Center);
 text.set_flex_grow(1.0);
@@ -47,16 +47,11 @@ top:    47.5
 
 TODO:
 
-- [ ] &mut self
-- [ ] constants - is undefined
 - [ ] can use cached measurement
 - [ ] copy style
 - [ ] YG_NODE_PROPERTYs
 - [ ] print func and node print
 - [ ] logger
-- [ ] measure function
-- [ ] measure output
-- [ ] text measuring
 - [ ] simple renderer (text via rustbox?)
 - [ ] higher level "safe" wrapper
 
