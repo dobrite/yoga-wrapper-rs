@@ -32,10 +32,6 @@ pub extern "C" fn measure(node: *mut ffi::Node,
     }
 }
 
-pub fn get_instance_count() -> i32 {
-    unsafe { ffi::YGNodeGetInstanceCount() }
-}
-
 #[derive(Debug)]
 pub struct Node {
     _node: *mut ffi::Node,
@@ -44,6 +40,10 @@ pub struct Node {
 impl Node {
     pub fn new() -> Node {
         Node { _node: unsafe { ffi::YGNodeNew() } }
+    }
+
+    pub fn get_instance_count() -> i32 {
+        unsafe { ffi::YGNodeGetInstanceCount() }
     }
 
     pub fn reset(&self) {
@@ -305,6 +305,7 @@ mod tests {
         assert!(!node.is_dirty());
         node.mark_dirty();
         assert!(node.is_dirty());
+        node.free_recursive();
     }
 
     #[test]
@@ -313,6 +314,7 @@ mod tests {
         node.set_context(&mut ffi::Context::new("Yo!"));
         let context = node.get_context();
         assert!(context.get_text() == "Yo!");
+        node.free_recursive();
     }
 
     #[test]
@@ -323,5 +325,14 @@ mod tests {
         node.calculate_layout();
         assert!(node.get_layout_width() == 4.0);
         assert!(node.get_layout_height() == 1.0);
+        node.free_recursive();
+    }
+
+    #[test]
+    fn get_instance_count() {
+        assert!(Node::get_instance_count() == 0);
+        let node = Node::new();
+        assert!(Node::get_instance_count() == 1);
+        node.free_recursive();
     }
 }
