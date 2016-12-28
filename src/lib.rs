@@ -60,19 +60,19 @@ impl Node {
         unsafe { ffi::YGNodeGetInstanceCount() }
     }
 
-    pub fn reset(&self) {
+    pub fn reset(&mut self) {
         unsafe { ffi::YGNodeReset(self._node) }
     }
 
-    pub fn free(&self) {
+    pub fn free(self) {
         unsafe { ffi::YGNodeFree(self._node) }
     }
 
-    pub fn free_recursive(&self) {
+    pub fn free_recursive(self) {
         unsafe { ffi::YGNodeFreeRecursive(self._node) }
     }
 
-    pub fn set_direction(&self, value: ffi::Direction) {
+    pub fn set_direction(&mut self, value: ffi::Direction) {
         unsafe { ffi::YGNodeStyleSetDirection(self._node, value) }
     }
 
@@ -80,7 +80,7 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetDirection(self._node) }
     }
 
-    pub fn set_flex_direction(&self, value: ffi::FlexDirection) {
+    pub fn set_flex_direction(&mut self, value: ffi::FlexDirection) {
         unsafe { ffi::YGNodeStyleSetFlexDirection(self._node, value) }
     }
 
@@ -88,7 +88,7 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetFlexDirection(self._node) }
     }
 
-    pub fn set_width(&self, width: f32) {
+    pub fn set_width(&mut self, width: f32) {
         unsafe { ffi::YGNodeStyleSetWidth(self._node, width) }
     }
 
@@ -96,7 +96,7 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetWidth(self._node) }
     }
 
-    pub fn set_height(&self, height: f32) {
+    pub fn set_height(&mut self, height: f32) {
         unsafe { ffi::YGNodeStyleSetHeight(self._node, height) }
     }
 
@@ -104,7 +104,7 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetHeight(self._node) }
     }
 
-    pub fn calculate_layout(&self) {
+    pub fn calculate_layout(&mut self) {
         unsafe {
             ffi::YGNodeCalculateLayout(self._node, std::f32::NAN, std::f32::NAN, Direction::LTR)
         }
@@ -130,11 +130,11 @@ impl Node {
         unsafe { ffi::YGNodeLayoutGetDirection(self._node) }
     }
 
-    pub fn insert_child(&self, child: &Node, index: u32) {
+    pub fn insert_child(&mut self, child: &Node, index: u32) {
         unsafe { ffi::YGNodeInsertChild(self._node, child._node, index) }
     }
 
-    pub fn remove_child(&self, child: &Node) {
+    pub fn remove_child(&mut self, child: &Node) {
         unsafe { ffi::YGNodeRemoveChild(self._node, child._node) }
     }
 
@@ -156,7 +156,7 @@ impl Node {
         }
     }
 
-    pub fn set_justify_content(&self, value: ffi::JustifyContent) {
+    pub fn set_justify_content(&mut self, value: ffi::JustifyContent) {
         unsafe { ffi::YGNodeStyleSetJustifyContent(self._node, value) }
     }
 
@@ -168,7 +168,7 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetAlignItems(self._node) }
     }
 
-    pub fn set_align_items(&self, value: ffi::Align) {
+    pub fn set_align_items(&mut self, value: ffi::Align) {
         unsafe { ffi::YGNodeStyleSetAlignItems(self._node, value) }
     }
 
@@ -176,7 +176,7 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetAlignSelf(self._node) }
     }
 
-    pub fn set_align_self(&self, value: ffi::Align) {
+    pub fn set_align_self(&mut self, value: ffi::Align) {
         unsafe { ffi::YGNodeStyleSetAlignSelf(self._node, value) }
     }
 
@@ -184,7 +184,7 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetAlignContent(self._node) }
     }
 
-    pub fn set_align_content(&self, value: ffi::Align) {
+    pub fn set_align_content(&mut self, value: ffi::Align) {
         unsafe { ffi::YGNodeStyleSetAlignContent(self._node, value) }
     }
 
@@ -192,7 +192,7 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetPositionType(self._node) }
     }
 
-    pub fn set_position_type(&self, value: ffi::PositionType) {
+    pub fn set_position_type(&mut self, value: ffi::PositionType) {
         unsafe { ffi::YGNodeStyleSetPositionType(self._node, value) }
     }
 
@@ -200,7 +200,7 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetFlexWrap(self._node) }
     }
 
-    pub fn set_flex_wrap(&self, value: ffi::FlexWrap) {
+    pub fn set_flex_wrap(&mut self, value: ffi::FlexWrap) {
         unsafe { ffi::YGNodeStyleSetFlexWrap(self._node, value) }
     }
 
@@ -208,11 +208,11 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetOverflow(self._node) }
     }
 
-    pub fn set_overflow(&self, value: ffi::Overflow) {
+    pub fn set_overflow(&mut self, value: ffi::Overflow) {
         unsafe { ffi::YGNodeStyleSetOverflow(self._node, value) }
     }
 
-    pub fn set_flex(&self, value: f32) {
+    pub fn set_flex(&mut self, value: f32) {
         unsafe { ffi::YGNodeStyleSetFlex(self._node, value) }
     }
 
@@ -220,7 +220,7 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetFlexGrow(self._node) }
     }
 
-    pub fn set_flex_grow(&self, value: f32) {
+    pub fn set_flex_grow(&mut self, value: f32) {
         unsafe { ffi::YGNodeStyleSetFlexGrow(self._node, value) }
     }
 
@@ -228,7 +228,7 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetFlexShrink(self._node) }
     }
 
-    pub fn set_flex_shrink(&self, value: f32) {
+    pub fn set_flex_shrink(&mut self, value: f32) {
         unsafe { ffi::YGNodeStyleSetFlexShrink(self._node, value) }
     }
 
@@ -236,7 +236,7 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetFlexBasis(self._node) }
     }
 
-    pub fn set_flex_basis(&self, value: f32) {
+    pub fn set_flex_basis(&mut self, value: f32) {
         unsafe { ffi::YGNodeStyleSetFlexBasis(self._node, value) }
     }
 
@@ -244,7 +244,7 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetMargin(self._node, edge) }
     }
 
-    pub fn set_margin(&self, edge: ffi::Edge, value: f32) {
+    pub fn set_margin(&mut self, edge: ffi::Edge, value: f32) {
         unsafe { ffi::YGNodeStyleSetMargin(self._node, edge, value) }
     }
 
@@ -252,7 +252,7 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetPadding(self._node, edge) }
     }
 
-    pub fn set_padding(&self, edge: ffi::Edge, value: f32) {
+    pub fn set_padding(&mut self, edge: ffi::Edge, value: f32) {
         unsafe { ffi::YGNodeStyleSetPadding(self._node, edge, value) }
     }
 
@@ -260,7 +260,7 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetBorder(self._node, edge) }
     }
 
-    pub fn set_border(&self, edge: ffi::Edge, value: f32) {
+    pub fn set_border(&mut self, edge: ffi::Edge, value: f32) {
         unsafe { ffi::YGNodeStyleSetBorder(self._node, edge, value) }
     }
 
@@ -268,17 +268,17 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetPosition(self._node, edge) }
     }
 
-    pub fn set_position(&self, edge: ffi::Edge, value: f32) {
+    pub fn set_position(&mut self, edge: ffi::Edge, value: f32) {
         unsafe { ffi::YGNodeStyleSetPosition(self._node, edge, value) }
     }
 
-    pub fn set_measure_func(&self,
+    pub fn set_measure_func(&mut self,
                             func: extern "C" fn(*mut ffi::Node, f32, MeasureMode, f32, MeasureMode)
                                                 -> Size) {
         unsafe { ffi::YGNodeSetMeasureFunc(self._node, func) }
     }
 
-    pub fn mark_dirty(&self) {
+    pub fn mark_dirty(&mut self) {
         unsafe { ffi::YGNodeMarkDirty(self._node) }
     }
 
@@ -313,7 +313,7 @@ mod tests {
 
     #[test]
     fn dirty_works() {
-        let node = Node::new();
+        let mut node = Node::new();
         node.set_measure_func(measure);
         assert!(!node.is_dirty());
         node.mark_dirty();
@@ -325,8 +325,10 @@ mod tests {
     fn context_works() {
         let mut node = Node::new();
         node.set_context(&mut Context::new("Yo!"));
-        let context = node.get_context();
-        assert!(context.get_text() == "Yo!");
+        {
+            let context = node.get_context();
+            assert!(context.get_text() == "Yo!");
+        }
         node.free_recursive();
     }
 
@@ -344,7 +346,7 @@ mod tests {
     #[test]
     fn get_instance_count() {
         assert!(Node::get_instance_count() == 0);
-        let node = Node::new();
+        let mut node = Node::new();
         assert!(Node::get_instance_count() == 1);
         node.free_recursive();
     }

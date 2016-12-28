@@ -44,7 +44,7 @@ extern "C" {
     pub fn YGNodeInsertChild(node: *mut Node, node: *const Node, index: uint32_t);
     pub fn YGNodeRemoveChild(node: *mut Node, child: *const Node);
     pub fn YGNodeGetChild(node: *const Node, index: uint32_t) -> Node;
-    pub fn YGNodeGetParent(node: *mut Node) -> Node;
+    pub fn YGNodeGetParent(node: *const Node) -> Node;
     pub fn YGNodeGetChildCount(node: *const Node) -> uint32_t;
 
     pub fn YGNodeCalculateLayout(node: *mut Node,
@@ -53,9 +53,9 @@ extern "C" {
                                  parentDirection: Direction);
 
     pub fn YGNodeMarkDirty(node: *mut Node);
-    pub fn YGNodeIsDirty(node: *mut Node) -> bool;
+    pub fn YGNodeIsDirty(node: *const Node) -> bool;
 
-    pub fn YGNodeGetContext(node: *mut Node) -> *mut c_void;
+    pub fn YGNodeGetContext(node: *const Node) -> *mut c_void;
     pub fn YGNodeSetContext(node: *mut Node, context: *mut c_void);
     pub fn YGNodeSetMeasureFunc(node: *mut Node,
                                 func: extern "C" fn(*mut Node,
