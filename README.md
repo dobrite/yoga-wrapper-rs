@@ -47,7 +47,12 @@ top:    47.5
 
 TODO:
 
-- [ ] constants - undefined
+- [ ] &mut self
+- [ ] constants - is undefined
+- [ ] can use cached measurement
+- [ ] copy style
+- [ ] YG_NODE_PROPERTYs
+- [ ] print func and node print
 - [ ] logger
 - [ ] measure function
 - [ ] measure output

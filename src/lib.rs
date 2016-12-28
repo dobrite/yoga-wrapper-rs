@@ -15,7 +15,21 @@ pub use self::ffi::MeasureMode;
 pub use self::ffi::Overflow;
 pub use self::ffi::PositionType;
 pub use self::ffi::PrintOptions;
+pub use self::ffi::Size;
 
+pub extern "C" fn measure(mut node: ffi::Node,
+                          width: f32,
+                          width_mode: MeasureMode,
+                          height: f32,
+                          height_mode: MeasureMode)
+                          -> Size {
+    Size {
+        width: 3.0,
+        height: 1.0,
+    }
+}
+
+#[derive(Debug)]
 pub struct Node {
     _node: *mut ffi::Node,
 }
@@ -23,6 +37,22 @@ pub struct Node {
 impl Node {
     pub fn new() -> Node {
         Node { _node: unsafe { ffi::YGNodeNew() } }
+    }
+
+    pub fn get_instance_count() -> i32 {
+        unsafe { ffi::YGNodeGetInstanceCount() }
+    }
+
+    pub fn reset(&self) {
+        unsafe { ffi::YGNodeReset(self._node) }
+    }
+
+    pub fn free(&self) {
+        unsafe { ffi::YGNodeFree(self._node) }
+    }
+
+    pub fn free_recursive(&self) {
+        unsafe { ffi::YGNodeFreeRecursive(self._node) }
     }
 
     pub fn set_direction(&self, value: ffi::Direction) {
@@ -59,10 +89,7 @@ impl Node {
 
     pub fn calculate_layout(&self) {
         unsafe {
-            ffi::YGNodeCalculateLayout(self._node,
-                                       self.get_width(),
-                                       self.get_height(),
-                                       Direction::LTR)
+            ffi::YGNodeCalculateLayout(self._node, std::f32::NAN, std::f32::NAN, Direction::LTR)
         }
     }
 
@@ -86,32 +113,30 @@ impl Node {
         unsafe { ffi::YGNodeLayoutGetDirection(self._node) }
     }
 
-    pub fn get_child_count(&self) -> u32 {
-        unsafe { ffi::YGNodeGetChildCount(self._node) }
+    pub fn insert_child(&self, child: &Node, index: u32) {
+        unsafe { ffi::YGNodeInsertChild(self._node, child._node, index) }
+    }
+
+    pub fn remove_child(&self, child: &Node) {
+        unsafe { ffi::YGNodeRemoveChild(self._node, child._node) }
     }
 
     pub fn get_child(&self, index: u32) -> Node {
         unsafe {
             let mut node = ffi::YGNodeGetChild(self._node, index);
-            Node { _node: &mut node }
+            Node { _node: &mut node } // this is wrong
         }
     }
 
-    pub fn insert_child(&self, child: &Node, index: u32) {
-        unsafe { ffi::YGNodeInsertChild(self._node, child._node, index) }
-    }
-
-    // TODO
-    // also do YogaNodeType removeChildAt(int i);
-    pub fn remove_child(&self, child: &Node) {
-        unsafe { ffi::YGNodeRemoveChild(self._node, child._node) }
+    pub fn get_child_count(&self) -> u32 {
+        unsafe { ffi::YGNodeGetChildCount(self._node) }
     }
 
     // TODO option
     pub fn get_parent(&self) -> Node {
         unsafe {
             let mut node = ffi::YGNodeGetParent(self._node);
-            Node { _node: &mut node }
+            Node { _node: &mut node } // this is wrong
         }
     }
 
@@ -231,16 +256,24 @@ impl Node {
         unsafe { ffi::YGNodeStyleSetPosition(self._node, edge, value) }
     }
 
-    // void setData(Object data);
-    // Object getData();
-    // void reset();
-    // boolean isDirty();
+    pub fn set_measure_func(&self,
+                            func: extern "C" fn(ffi::Node, f32, MeasureMode, f32, MeasureMode)
+                                                -> Size) {
+        unsafe { ffi::YGNodeSetMeasureFunc(self._node, func) }
+    }
+
+    pub fn mark_dirty(&self) {
+        unsafe { ffi::YGNodeMarkDirty(self._node) }
+    }
+
+    pub fn is_dirty(&self) -> bool {
+        unsafe { ffi::YGNodeIsDirty(self._node) }
+    }
+
     // boolean hasNewLayout();
-    // void dirty();
     // void markLayoutSeen();
     // void copyStyle(YogaNodeType srcNode);
     // TODO int indexOf(YogaNodeType child);
-    // TODO void setMeasureFunction(YogaMeasureFunction measureFunction);
     // TODO boolean isMeasureDefined();
 }
 
