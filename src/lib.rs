@@ -1,5 +1,7 @@
 extern crate libc;
 
+use libc::c_void;
+
 mod ffi;
 
 pub use self::ffi::Align;
@@ -17,16 +19,21 @@ pub use self::ffi::PositionType;
 pub use self::ffi::PrintOptions;
 pub use self::ffi::Size;
 
-pub extern "C" fn measure(mut node: ffi::Node,
+pub extern "C" fn measure(node: *mut ffi::Node,
                           width: f32,
                           width_mode: MeasureMode,
                           height: f32,
                           height_mode: MeasureMode)
                           -> Size {
+    let n = Node { _node: node };
     Size {
-        width: 3.0,
+        width: n.get_context().get_text().len() as f32,
         height: 1.0,
     }
+}
+
+pub fn get_instance_count() -> i32 {
+    unsafe { ffi::YGNodeGetInstanceCount() }
 }
 
 #[derive(Debug)]
@@ -37,10 +44,6 @@ pub struct Node {
 impl Node {
     pub fn new() -> Node {
         Node { _node: unsafe { ffi::YGNodeNew() } }
-    }
-
-    pub fn get_instance_count() -> i32 {
-        unsafe { ffi::YGNodeGetInstanceCount() }
     }
 
     pub fn reset(&self) {
@@ -257,7 +260,7 @@ impl Node {
     }
 
     pub fn set_measure_func(&self,
-                            func: extern "C" fn(ffi::Node, f32, MeasureMode, f32, MeasureMode)
+                            func: extern "C" fn(*mut ffi::Node, f32, MeasureMode, f32, MeasureMode)
                                                 -> Size) {
         unsafe { ffi::YGNodeSetMeasureFunc(self._node, func) }
     }
@@ -270,6 +273,18 @@ impl Node {
         unsafe { ffi::YGNodeIsDirty(self._node) }
     }
 
+    pub fn set_context(&mut self, context: *mut ffi::Context) {
+        unsafe { ffi::YGNodeSetContext(self._node, context as *mut c_void) }
+    }
+
+    pub fn get_context(&self) -> &ffi::Context {
+        unsafe {
+            let context = ffi::YGNodeGetContext(self._node);
+            let ref ctx: ffi::Context = *(context as *mut ffi::Context);
+            ctx
+        }
+    }
+
     // boolean hasNewLayout();
     // void markLayoutSeen();
     // void copyStyle(YogaNodeType srcNode);
@@ -279,6 +294,34 @@ impl Node {
 
 #[cfg(test)]
 mod tests {
+    use ffi;
+    use Node;
+    use measure;
+
     #[test]
-    fn it_works() {}
+    fn dirty_works() {
+        let node = Node::new();
+        node.set_measure_func(measure);
+        assert!(!node.is_dirty());
+        node.mark_dirty();
+        assert!(node.is_dirty());
+    }
+
+    #[test]
+    fn context_works() {
+        let mut node = Node::new();
+        node.set_context(&mut ffi::Context::new("Yo!"));
+        let context = node.get_context();
+        assert!(context.get_text() == "Yo!");
+    }
+
+    #[test]
+    fn measure_works() {
+        let mut node = Node::new();
+        node.set_measure_func(measure);
+        node.set_context(&mut ffi::Context::new("Yo!!"));
+        node.calculate_layout();
+        assert!(node.get_layout_width() == 4.0);
+        assert!(node.get_layout_height() == 1.0);
+    }
 }

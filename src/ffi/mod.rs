@@ -33,6 +33,21 @@ pub use self::size::Size;
 #[repr(C)]
 pub struct Node {}
 
+#[repr(C)]
+pub struct Context<'a> {
+    pub text: &'a str,
+}
+
+impl<'a> Context<'a> {
+    pub fn new(text: &'a str) -> Context<'a> {
+        Context { text: text }
+    }
+
+    pub fn get_text(&self) -> &'a str {
+        self.text
+    }
+}
+
 #[link(name = "yoga")]
 extern "C" {
     pub fn YGNodeNew() -> *mut Node;
@@ -58,7 +73,7 @@ extern "C" {
     pub fn YGNodeGetContext(node: *mut Node) -> *mut c_void;
     pub fn YGNodeSetContext(node: *mut Node, context: *mut c_void);
     pub fn YGNodeSetMeasureFunc(node: *mut Node,
-                                func: extern "C" fn(Node,
+                                func: extern "C" fn(*mut Node,
                                                     c_float,
                                                     MeasureMode,
                                                     c_float,
