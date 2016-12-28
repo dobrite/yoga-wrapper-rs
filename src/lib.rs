@@ -19,6 +19,20 @@ pub use self::ffi::PositionType;
 pub use self::ffi::PrintOptions;
 pub use self::ffi::Size;
 
+pub struct Context<'a> {
+    pub text: &'a str,
+}
+
+impl<'a> Context<'a> {
+    pub fn new(text: &'a str) -> Context<'a> {
+        Context { text: text }
+    }
+
+    pub fn get_text(&self) -> &'a str {
+        self.text
+    }
+}
+
 pub extern "C" fn measure(node: *mut ffi::Node,
                           width: f32,
                           width_mode: MeasureMode,
@@ -272,14 +286,14 @@ impl Node {
         unsafe { ffi::YGNodeIsDirty(self._node) }
     }
 
-    pub fn set_context(&mut self, context: *mut ffi::Context) {
+    pub fn set_context(&mut self, context: *mut Context) {
         unsafe { ffi::YGNodeSetContext(self._node, context as *mut c_void) }
     }
 
-    pub fn get_context(&self) -> &ffi::Context {
+    pub fn get_context(&self) -> &Context {
         unsafe {
             let context = ffi::YGNodeGetContext(self._node);
-            let ref ctx: ffi::Context = *(context as *mut ffi::Context);
+            let ref ctx: Context = *(context as *mut Context);
             ctx
         }
     }
@@ -293,7 +307,7 @@ impl Node {
 
 #[cfg(test)]
 mod tests {
-    use ffi;
+    use Context;
     use Node;
     use measure;
 
@@ -310,7 +324,7 @@ mod tests {
     #[test]
     fn context_works() {
         let mut node = Node::new();
-        node.set_context(&mut ffi::Context::new("Yo!"));
+        node.set_context(&mut Context::new("Yo!"));
         let context = node.get_context();
         assert!(context.get_text() == "Yo!");
         node.free_recursive();
@@ -320,7 +334,7 @@ mod tests {
     fn measure_works() {
         let mut node = Node::new();
         node.set_measure_func(measure);
-        node.set_context(&mut ffi::Context::new("Yo!!"));
+        node.set_context(&mut Context::new("Yo!!"));
         node.calculate_layout();
         assert!(node.get_layout_width() == 4.0);
         assert!(node.get_layout_height() == 1.0);
