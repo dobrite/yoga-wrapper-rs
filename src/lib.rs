@@ -127,7 +127,7 @@ impl Node {
     pub fn get_child(&self, index: u32) -> Node {
         unsafe {
             let mut node = ffi::YGNodeGetChild(self._node, index);
-            Node { _node: &mut node } // this is wrong
+            Node { _node: &mut node }
         }
     }
 
@@ -135,11 +135,10 @@ impl Node {
         unsafe { ffi::YGNodeGetChildCount(self._node) }
     }
 
-    // TODO option
     pub fn get_parent(&self) -> Node {
         unsafe {
             let mut node = ffi::YGNodeGetParent(self._node);
-            Node { _node: &mut node } // this is wrong
+            Node { _node: &mut node }
         }
     }
 
