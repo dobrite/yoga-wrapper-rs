@@ -52,6 +52,11 @@ TODO:
 - [ ] YG_NODE_PROPERTYs
 - [ ] print func and node print
 - [ ] logger
+- [ ] boolean hasNewLayout();
+- [ ] void markLayoutSeen();
+- [ ] void copyStyle(YogaNodeType srcNode);
+- [ ] int indexOf(YogaNodeType child);
+- [ ] boolean isMeasureDefined();
 - [ ] simple renderer (text via rustbox?)
 - [ ] higher level "safe" wrapper
 

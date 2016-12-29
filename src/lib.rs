@@ -309,12 +309,6 @@ impl Node {
             ctx
         }
     }
-
-    // boolean hasNewLayout();
-    // void markLayoutSeen();
-    // void copyStyle(YogaNodeType srcNode);
-    // TODO int indexOf(YogaNodeType child);
-    // TODO boolean isMeasureDefined();
 }
 
 impl std::ops::Drop for Node {
