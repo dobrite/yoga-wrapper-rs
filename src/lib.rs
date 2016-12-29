@@ -147,10 +147,7 @@ impl Node {
     }
 
     pub fn get_child(&self, index: u32) -> Node {
-        unsafe {
-            let mut node = ffi::YGNodeGetChild(self._node, index);
-            Node { _node: &mut node }
-        }
+        unsafe { Node { _node: ffi::YGNodeGetChild(self._node, index) } }
     }
 
     pub fn get_child_count(&self) -> u32 {
@@ -158,10 +155,7 @@ impl Node {
     }
 
     pub fn get_parent(&self) -> Node {
-        unsafe {
-            let mut node = ffi::YGNodeGetParent(self._node);
-            Node { _node: &mut node }
-        }
+        unsafe { Node { _node: ffi::YGNodeGetParent(self._node) } }
     }
 
     pub fn set_justify_content(&mut self, value: ffi::JustifyContent) {
@@ -355,5 +349,32 @@ mod tests {
         assert!(Node::get_instance_count() == 0);
         let mut node = Node::new();
         assert!(Node::get_instance_count() == 1);
+    }
+
+    #[test]
+    fn get_child_count() {
+        let mut p1 = Node::new();
+        let mut c1 = Node::new();
+        let mut c2 = Node::new();
+        p1.insert_child(&c1, 0);
+        p1.insert_child(&c2, 1);
+        assert!(p1.get_child_count() == 2);
+    }
+
+    #[test]
+    fn get_child() {
+        let mut p1 = Node::new();
+
+        let mut c1 = Node::new();
+        c1.set_width(1.0);
+
+        let mut c2 = Node::new();
+        c2.set_width(2.0);
+
+        p1.insert_child(&c1, 0);
+        p1.insert_child(&c2, 1);
+
+        assert!(p1.get_child(0).get_width() == 1.0);
+        assert!(p1.get_child(1).get_width() == 2.0);
     }
 }

@@ -41,10 +41,10 @@ extern "C" {
     pub fn YGNodeReset(node: *mut Node);
     pub fn YGNodeGetInstanceCount() -> int32_t;
 
-    pub fn YGNodeInsertChild(node: *mut Node, node: *const Node, index: uint32_t);
+    pub fn YGNodeInsertChild(node: *mut Node, child: *const Node, index: uint32_t);
     pub fn YGNodeRemoveChild(node: *mut Node, child: *const Node);
-    pub fn YGNodeGetChild(node: *const Node, index: uint32_t) -> Node;
-    pub fn YGNodeGetParent(node: *const Node) -> Node;
+    pub fn YGNodeGetChild(node: *const Node, index: uint32_t) -> *mut Node;
+    pub fn YGNodeGetParent(node: *const Node) -> *mut Node;
     pub fn YGNodeGetChildCount(node: *const Node) -> uint32_t;
 
     pub fn YGNodeCalculateLayout(node: *mut Node,
