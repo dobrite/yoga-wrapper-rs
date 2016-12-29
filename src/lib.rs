@@ -40,8 +40,16 @@ pub extern "C" fn measure(node: *mut ffi::Node,
                           height_mode: MeasureMode)
                           -> Size {
     let n = Node { _node: node };
+    let width = n.get_context().get_text().len() as f32;
+
+    // n is only made a Node to get at context.
+    // we want to keep node passed in around
+    // so don't run Drop at end of method
+    // it'll Drop elsewhere
+    std::mem::forget(n);
+
     Size {
-        width: n.get_context().get_text().len() as f32,
+        width: width,
         height: 1.0,
     }
 }
@@ -273,7 +281,11 @@ impl Node {
     }
 
     pub fn set_measure_func(&mut self,
-                            func: extern "C" fn(*mut ffi::Node, f32, MeasureMode, f32, MeasureMode)
+                            func: extern "C" fn(*mut ffi::Node,
+                                                f32,
+                                                MeasureMode,
+                                                f32,
+                                                MeasureMode)
                                                 -> Size) {
         unsafe { ffi::YGNodeSetMeasureFunc(self._node, func) }
     }
@@ -305,6 +317,12 @@ impl Node {
     // TODO boolean isMeasureDefined();
 }
 
+impl std::ops::Drop for Node {
+    fn drop(&mut self) {
+        unsafe { ffi::YGNodeFree(self._node) }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use Context;
@@ -318,18 +336,14 @@ mod tests {
         assert!(!node.is_dirty());
         node.mark_dirty();
         assert!(node.is_dirty());
-        node.free_recursive();
     }
 
     #[test]
     fn context_works() {
         let mut node = Node::new();
         node.set_context(&mut Context::new("Yo!"));
-        {
-            let context = node.get_context();
-            assert!(context.get_text() == "Yo!");
-        }
-        node.free_recursive();
+        let context = node.get_context();
+        assert!(context.get_text() == "Yo!");
     }
 
     #[test]
@@ -340,7 +354,6 @@ mod tests {
         node.calculate_layout();
         assert!(node.get_layout_width() == 4.0);
         assert!(node.get_layout_height() == 1.0);
-        node.free_recursive();
     }
 
     #[test]
@@ -348,6 +361,5 @@ mod tests {
         assert!(Node::get_instance_count() == 0);
         let mut node = Node::new();
         assert!(Node::get_instance_count() == 1);
-        node.free_recursive();
     }
 }
