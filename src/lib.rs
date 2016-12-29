@@ -42,12 +42,6 @@ pub extern "C" fn measure(node: *mut ffi::Node,
     let n = Node { _node: node };
     let width = n.get_context().get_text().len() as f32;
 
-    // n is only made a Node to get at context.
-    // we want to keep node passed in around
-    // so don't run Drop at end of method
-    // it'll Drop elsewhere
-    std::mem::forget(n);
-
     Size {
         width: width,
         height: 1.0,
@@ -305,12 +299,6 @@ impl Node {
     }
 }
 
-impl std::ops::Drop for Node {
-    fn drop(&mut self) {
-        unsafe { ffi::YGNodeFree(self._node) }
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use Context;
@@ -324,14 +312,18 @@ mod tests {
         assert!(!node.is_dirty());
         node.mark_dirty();
         assert!(node.is_dirty());
+        node.free();
     }
 
     #[test]
     fn context_works() {
         let mut node = Node::new();
         node.set_context(&mut Context::new("Yo!"));
-        let context = node.get_context();
-        assert!(context.get_text() == "Yo!");
+        {
+            let context = node.get_context();
+            assert!(context.get_text() == "Yo!");
+        }
+        node.free();
     }
 
     #[test]
@@ -342,6 +334,7 @@ mod tests {
         node.calculate_layout();
         assert!(node.get_layout_width() == 4.0);
         assert!(node.get_layout_height() == 1.0);
+        node.free();
     }
 
     #[test]
@@ -349,6 +342,8 @@ mod tests {
         assert!(Node::get_instance_count() == 0);
         let mut node = Node::new();
         assert!(Node::get_instance_count() == 1);
+        node.free();
+        assert!(Node::get_instance_count() == 0);
     }
 
     #[test]
@@ -359,6 +354,9 @@ mod tests {
         p1.insert_child(&c1, 0);
         p1.insert_child(&c2, 1);
         assert!(p1.get_child_count() == 2);
+        p1.free();
+        c1.free();
+        c2.free();
     }
 
     #[test]
@@ -376,5 +374,8 @@ mod tests {
 
         assert!(p1.get_child(0).get_width() == 1.0);
         assert!(p1.get_child(1).get_width() == 2.0);
+        p1.free();
+        c1.free();
+        c2.free();
     }
 }
