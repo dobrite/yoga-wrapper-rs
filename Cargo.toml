@@ -1,7 +1,7 @@
 [package]
 name = "yoga"
 version = "0.1.0"
-authors = ["David Obrite <davidobrite@gmail.com>"]
+authors = ["Dave O <davidobrite@gmail.com>"]
 build = "build.rs"
 
 [lib]
