@@ -1,6 +1,6 @@
 A verbatim rust wrapper for [Yoga](https://github.com/facebook/yoga). Probably most likely very unsafe.
 
-Expects the yoga repo to be cloned at the root (see `build.rs`).
+Expects the yoga repo to be cloned in `/usr/local/lib/` (see `build.rs`).
 
 #### Running the "C" example:
 

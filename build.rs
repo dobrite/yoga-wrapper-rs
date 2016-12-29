@@ -2,5 +2,6 @@ extern crate gcc;
 
 fn main() {
     gcc::compile_library("libyoga.a",
-                         &["./yoga/yoga/Yoga.c", "./yoga/yoga/YGNodeList.c"]);
+                         &["/usr/local/lib/yoga/yoga/Yoga.c",
+                           "/usr/local/lib/yoga/yoga/YGNodeList.c"]);
 }
