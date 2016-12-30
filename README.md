@@ -4,6 +4,10 @@ Expects the yoga repo to be cloned in `/usr/local/lib/` (see `build.rs`).
 
 #### Running the "C" example:
 
+```bash
+$ cargo run --example c
+```
+
 ```rust
 let mut root = yoga::Node::new();
 root.set_width(500.0);

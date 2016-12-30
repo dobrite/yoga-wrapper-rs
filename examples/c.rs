@@ -1,4 +1,6 @@
-extern crate yoga;
+extern crate yoga_wrapper;
+
+use yoga_wrapper as yoga;
 
 fn main() {
     let mut root = yoga::Node::new();

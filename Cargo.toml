@@ -1,15 +1,11 @@
 [package]
-name = "yoga"
+name = "yoga-wrapper"
 version = "0.1.0"
 authors = ["Dave O <davidobrite@gmail.com>"]
 build = "build.rs"
 
 [lib]
-name = "yoga"
-
-[[bin]]
-name = "yoga"
-doc = false
+name = "yoga_wrapper"
 
 [dependencies]
 libc = "0.2.0"
