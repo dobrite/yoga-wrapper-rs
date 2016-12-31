@@ -3,6 +3,7 @@ extern crate libc;
 use libc::c_void;
 
 mod ffi;
+mod measures;
 
 pub use self::ffi::Align;
 pub use self::ffi::Dimensions;
@@ -18,18 +19,23 @@ pub use self::ffi::Overflow;
 pub use self::ffi::PositionType;
 pub use self::ffi::PrintOptions;
 pub use self::ffi::Size;
+pub use self::measures::Measures;
 
-pub struct Context<'a> {
-    pub text: &'a str,
+pub struct Context<'a, 'm> {
+    text: &'a str,
+    measurer: &'m Measures,
 }
 
-impl<'a> Context<'a> {
-    pub fn new(text: &'a str) -> Context<'a> {
-        Context { text: text }
+impl<'a, 'm> Context<'a, 'm> {
+    pub fn new<M: Measures>(text: &'a str, measures: &'m M) -> Context<'a, 'm> {
+        Context {
+            text: text,
+            measurer: measures,
+        }
     }
 
-    pub fn get_text(&self) -> &'a str {
-        self.text
+    pub fn measure(&self) -> Size {
+        self.measurer.measure(self.text)
     }
 }
 
@@ -40,12 +46,7 @@ pub extern "C" fn measure(node: *mut ffi::Node,
                           height_mode: MeasureMode)
                           -> Size {
     let n = Node { _node: node };
-    let width = n.get_context().get_text().len() as f32;
-
-    Size {
-        width: width,
-        height: 1.0,
-    }
+    n.get_context().measure()
 }
 
 #[derive(Debug)]
@@ -302,8 +303,21 @@ impl Node {
 #[cfg(test)]
 mod tests {
     use Context;
+    use Measures;
     use Node;
+    use Size;
     use measure;
+
+    struct Measurer {}
+
+    impl Measures for Measurer {
+        fn measure(&self, text: &str) -> Size {
+            Size {
+                width: text.len() as f32,
+                height: 1.0,
+            }
+        }
+    }
 
     #[test]
     fn dirty_works() {
@@ -318,10 +332,10 @@ mod tests {
     #[test]
     fn context_works() {
         let mut node = Node::new();
-        node.set_context(&mut Context::new("Yo!"));
+        node.set_context(&mut Context::new("Yo!", &Measurer {}));
         {
             let context = node.get_context();
-            assert!(context.get_text() == "Yo!");
+            assert!(context.measure().width == 3.0);
         }
         node.free();
     }
@@ -330,7 +344,7 @@ mod tests {
     fn measure_works() {
         let mut node = Node::new();
         node.set_measure_func(measure);
-        node.set_context(&mut Context::new("Yo!!"));
+        node.set_context(&mut Context::new("Yo!!", &Measurer {}));
         node.calculate_layout();
         assert!(node.get_layout_width() == 4.0);
         assert!(node.get_layout_height() == 1.0);
