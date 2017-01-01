@@ -3,13 +3,27 @@ use std::fmt;
 use ffi::size::Size;
 use measures::Measures;
 
+pub struct ContextFactory<'m> {
+    measurer: &'m Measures,
+}
+
+impl<'m> ContextFactory<'m> {
+    pub fn new(measures: &'m Measures) -> ContextFactory<'m> {
+        ContextFactory { measurer: measures }
+    }
+
+    pub fn create<'a>(&self, text: &'a str) -> Context<'a, 'm> {
+        Context::new(text, self.measurer)
+    }
+}
+
 pub struct Context<'a, 'm> {
     text: &'a str,
     measurer: &'m Measures,
 }
 
 impl<'a, 'm> Context<'a, 'm> {
-    pub fn new<M: Measures>(text: &'a str, measures: &'m M) -> Context<'a, 'm> {
+    pub fn new(text: &'a str, measures: &'m Measures) -> Context<'a, 'm> {
         Context {
             text: text,
             measurer: measures,

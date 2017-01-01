@@ -22,7 +22,7 @@ pub use ffi::PositionType;
 pub use ffi::PrintOptions;
 pub use ffi::Size;
 
-pub use context::Context;
+pub use context::{Context, ContextFactory};
 pub use measures::Measures;
 
 use measure::measure;
