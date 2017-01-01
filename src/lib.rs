@@ -2,7 +2,9 @@ extern crate libc;
 
 use libc::c_void;
 
+mod context;
 mod ffi;
+mod measure;
 mod measures;
 
 pub use self::ffi::Align;
@@ -19,35 +21,11 @@ pub use self::ffi::Overflow;
 pub use self::ffi::PositionType;
 pub use self::ffi::PrintOptions;
 pub use self::ffi::Size;
-pub use self::measures::Measures;
 
-pub struct Context<'a, 'm> {
-    text: &'a str,
-    measurer: &'m Measures,
-}
+pub use context::Context;
+pub use measures::Measures;
 
-impl<'a, 'm> Context<'a, 'm> {
-    pub fn new<M: Measures>(text: &'a str, measures: &'m M) -> Context<'a, 'm> {
-        Context {
-            text: text,
-            measurer: measures,
-        }
-    }
-
-    pub fn measure(&self) -> Size {
-        self.measurer.measure(self.text)
-    }
-}
-
-pub extern "C" fn measure(node: *mut ffi::Node,
-                          width: f32,
-                          width_mode: MeasureMode,
-                          height: f32,
-                          height_mode: MeasureMode)
-                          -> Size {
-    let n = Node { _node: node };
-    n.get_context().measure()
-}
+use measure::measure;
 
 #[derive(Debug)]
 pub struct Node {
