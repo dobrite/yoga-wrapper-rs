@@ -1,4 +1,5 @@
 #[repr(C)]
+#[derive(Debug)]
 pub enum JustifyContent {
     FlexStart,
     Center,

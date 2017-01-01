@@ -31,6 +31,7 @@ pub use self::print_options::PrintOptions;
 pub use self::size::Size;
 
 #[repr(C)]
+#[derive(Debug)]
 pub struct Node {}
 
 #[link(name = "yoga")]
