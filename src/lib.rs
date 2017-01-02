@@ -120,6 +120,8 @@ impl Node {
     }
 
     pub fn get_child(&self, index: u32) -> Node {
+        // FIXME this is wrong
+        // also prevents Drop impl for Node
         unsafe { Node { _node: ffi::YGNodeGetChild(self._node, index) } }
     }
 
@@ -128,6 +130,8 @@ impl Node {
     }
 
     pub fn get_parent(&self) -> Node {
+        // FIXME this is wrong
+        // also prevents Drop impl for Node
         unsafe { Node { _node: ffi::YGNodeGetParent(self._node) } }
     }
 
