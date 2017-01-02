@@ -1,3 +1,5 @@
+#![feature(specialization)]
+
 extern crate libc;
 
 use libc::c_void;
@@ -23,7 +25,7 @@ pub use ffi::PrintOptions;
 pub use ffi::Size;
 
 pub use context::{Context, ContextFactory};
-pub use measures::Measures;
+pub use measures::{Measures, Measurer};
 
 use measure::measure;
 
@@ -281,21 +283,10 @@ impl Node {
 #[cfg(test)]
 mod tests {
     use Context;
-    use Measures;
+    use Measurer;
     use Node;
     use Size;
     use measure;
-
-    struct Measurer {}
-
-    impl Measures for Measurer {
-        fn measure(&self, text: &str) -> Size {
-            Size {
-                width: text.len() as f32,
-                height: 1.0,
-            }
-        }
-    }
 
     #[test]
     fn dirty_works() {
