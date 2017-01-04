@@ -22,5 +22,6 @@ pub use ffi::PrintOptions;
 pub use ffi::Size;
 
 pub use context::{Context, ContextFactory};
+pub use measure::measure;
 pub use measures::Measures;
 pub use node::Node;
