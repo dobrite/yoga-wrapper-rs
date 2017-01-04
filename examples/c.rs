@@ -1,21 +1,21 @@
 extern crate yoga_wrapper;
 
-use yoga_wrapper as yoga;
+use yoga_wrapper::{Node, FlexDirection, Edge, Align};
 
 fn main() {
-    let mut root = yoga::Node::new();
+    let mut root = Node::new();
     root.set_width(500.0);
     root.set_height(120.0);
-    root.set_flex_direction(yoga::FlexDirection::Row);
-    root.set_padding(yoga::Edge::All, 20.0);
+    root.set_flex_direction(FlexDirection::Row);
+    root.set_padding(Edge::All, 20.0);
 
-    let mut image = yoga::Node::new();
+    let mut image = Node::new();
     image.set_width(80.0);
-    image.set_margin(yoga::Edge::End, 20.0);
+    image.set_margin(Edge::End, 20.0);
 
-    let mut text = yoga::Node::new();
+    let mut text = Node::new();
     text.set_height(25.0);
-    text.set_align_self(yoga::Align::Center);
+    text.set_align_self(Align::Center);
     text.set_flex_grow(1.0);
 
     root.insert_child(&image, 0);
