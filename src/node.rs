@@ -1,4 +1,5 @@
 use std;
+use std::default::Default;
 use libc::c_void;
 
 use ffi;
@@ -9,6 +10,12 @@ use measure::measure;
 #[derive(Debug)]
 pub struct Node {
     pub _node: *mut ffi::Node, // TODO Into/From trait
+}
+
+impl Default for Node {
+    fn default() -> Node {
+        Node::new()
+    }
 }
 
 impl Node {
