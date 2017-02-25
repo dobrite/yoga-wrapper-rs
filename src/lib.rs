@@ -21,6 +21,8 @@ pub use ffi::PositionType;
 pub use ffi::PrintOptions;
 pub use ffi::Size;
 
+pub use ffi::Node as RawNode;
+
 pub use context::Context;
 pub use measure::measure;
 pub use measures::Measures;
