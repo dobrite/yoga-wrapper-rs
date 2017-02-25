@@ -260,11 +260,7 @@ impl Node {
     }
 
     pub fn get_context(&self) -> &Context {
-        unsafe {
-            let context = ffi::YGNodeGetContext(self._node);
-            let ref ctx: Context = *(context as *mut Context);
-            ctx
-        }
+        unsafe { &*(ffi::YGNodeGetContext(self._node) as *mut Context) }
     }
 }
 
