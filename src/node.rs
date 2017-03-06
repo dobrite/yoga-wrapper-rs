@@ -1,11 +1,11 @@
-use std;
-use std::default::Default;
-use libc::c_void;
+use context::Context;
 
 use ffi;
 use ffi::{Direction, MeasureMode, Size};
-use context::Context;
+use libc::c_void;
 use measure::measure;
+use std;
+use std::default::Default;
 
 #[derive(Debug)]
 pub struct Node {
@@ -237,13 +237,10 @@ impl Node {
         unsafe { ffi::YGNodeStyleSetPosition(self._node, edge, value) }
     }
 
-    pub fn set_measure_func(&mut self,
-                            func: extern "C" fn(*mut ffi::Node,
-                                                f32,
-                                                MeasureMode,
-                                                f32,
-                                                MeasureMode)
-                                                -> Size) {
+    pub fn set_measure_func(
+        &mut self,
+        func: extern "C" fn(*mut ffi::Node, f32, MeasureMode, f32, MeasureMode) -> Size
+    ) {
         unsafe { ffi::YGNodeSetMeasureFunc(self._node, func) }
     }
 

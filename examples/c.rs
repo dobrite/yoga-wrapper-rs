@@ -1,6 +1,6 @@
 extern crate yoga_wrapper;
 
-use yoga_wrapper::{Node, FlexDirection, Edge, Align};
+use yoga_wrapper::{Align, Edge, FlexDirection, Node};
 
 fn main() {
     let mut root = Node::new();

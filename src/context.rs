@@ -1,7 +1,6 @@
-use std::fmt;
-
 use ffi::size::Size;
 use measures::Measures;
+use std::fmt;
 
 pub struct Context<'a, 'm> {
     text: &'a str,
