@@ -1,9 +1,8 @@
 use context::Context;
 
 use ffi;
-use ffi::{Direction, MeasureMode, Size};
+use ffi::{Direction, MeasureMode, Size, Value};
 use libc::c_void;
-use measure::measure;
 use std;
 use std::default::Default;
 
@@ -55,19 +54,19 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetFlexDirection(self._node) }
     }
 
-    pub fn set_width(&mut self, width: f32) {
-        unsafe { ffi::YGNodeStyleSetWidth(self._node, width) }
+    pub fn set_width<V>(&mut self, width: V) where V: Into<Value> {
+        unsafe { ffi::YGNodeStyleSetWidth(self._node, width.into()) }
     }
 
-    pub fn get_width(&self) -> f32 {
+    pub fn get_width(&self) -> Value {
         unsafe { ffi::YGNodeStyleGetWidth(self._node) }
     }
 
-    pub fn set_height(&mut self, height: f32) {
-        unsafe { ffi::YGNodeStyleSetHeight(self._node, height) }
+    pub fn set_height<V>(&mut self, height: V) where V: Into<Value> {
+        unsafe { ffi::YGNodeStyleSetHeight(self._node, height.into()) }
     }
 
-    pub fn get_height(&self) -> f32 {
+    pub fn get_height(&self) -> Value {
         unsafe { ffi::YGNodeStyleGetHeight(self._node) }
     }
 
@@ -197,28 +196,28 @@ impl Node {
         unsafe { ffi::YGNodeStyleSetFlexShrink(self._node, value) }
     }
 
-    pub fn get_flex_basis(&self) -> f32 {
+    pub fn get_flex_basis(&self) -> Value {
         unsafe { ffi::YGNodeStyleGetFlexBasis(self._node) }
     }
 
-    pub fn set_flex_basis(&mut self, value: f32) {
-        unsafe { ffi::YGNodeStyleSetFlexBasis(self._node, value) }
+    pub fn set_flex_basis<V>(&mut self, value: V) where V: Into<Value> {
+        unsafe { ffi::YGNodeStyleSetFlexBasis(self._node, value.into()) }
     }
 
-    pub fn get_margin(&self, edge: ffi::Edge) -> f32 {
+    pub fn get_margin(&self, edge: ffi::Edge) -> Value {
         unsafe { ffi::YGNodeStyleGetMargin(self._node, edge) }
     }
 
-    pub fn set_margin(&mut self, edge: ffi::Edge, value: f32) {
-        unsafe { ffi::YGNodeStyleSetMargin(self._node, edge, value) }
+    pub fn set_margin<V>(&mut self, edge: ffi::Edge, value: V) where V: Into<Value> {
+        unsafe { ffi::YGNodeStyleSetMargin(self._node, edge, value.into()) }
     }
 
-    pub fn get_padding(&self, edge: ffi::Edge) -> f32 {
+    pub fn get_padding(&self, edge: ffi::Edge) -> Value {
         unsafe { ffi::YGNodeStyleGetPadding(self._node, edge) }
     }
 
-    pub fn set_padding(&mut self, edge: ffi::Edge, value: f32) {
-        unsafe { ffi::YGNodeStyleSetPadding(self._node, edge, value) }
+    pub fn set_padding<V>(&mut self, edge: ffi::Edge, value: V) where V: Into<Value> {
+        unsafe { ffi::YGNodeStyleSetPadding(self._node, edge, value.into()) }
     }
 
     pub fn get_border(&self, edge: ffi::Edge) -> f32 {
@@ -229,12 +228,12 @@ impl Node {
         unsafe { ffi::YGNodeStyleSetBorder(self._node, edge, value) }
     }
 
-    pub fn get_position(&self, edge: ffi::Edge) -> f32 {
+    pub fn get_position(&self, edge: ffi::Edge) -> Value {
         unsafe { ffi::YGNodeStyleGetPosition(self._node, edge) }
     }
 
-    pub fn set_position(&mut self, edge: ffi::Edge, value: f32) {
-        unsafe { ffi::YGNodeStyleSetPosition(self._node, edge, value) }
+    pub fn set_position<V>(&mut self, edge: ffi::Edge, value: V) where V: Into<Value> {
+        unsafe { ffi::YGNodeStyleSetPosition(self._node, edge, value.into()) }
     }
 
     pub fn set_measure_func(
@@ -347,8 +346,8 @@ mod tests {
         p1.insert_child(&c1, 0);
         p1.insert_child(&c2, 1);
 
-        assert!(p1.get_child(0).get_width() == 1.0);
-        assert!(p1.get_child(1).get_width() == 2.0);
+        assert!(p1.get_child(0).get_width().value == 1.0);
+        assert!(p1.get_child(1).get_width().value == 2.0);
         p1.free();
         c1.free();
         c2.free();

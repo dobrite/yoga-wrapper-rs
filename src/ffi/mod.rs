@@ -14,6 +14,8 @@ pub mod overflow;
 pub mod position_type;
 pub mod print_options;
 pub mod size;
+pub mod unit;
+pub mod value;
 
 pub use self::align::Align;
 pub use self::dimensions::Dimensions;
@@ -29,6 +31,8 @@ pub use self::overflow::Overflow;
 pub use self::position_type::PositionType;
 pub use self::print_options::PrintOptions;
 pub use self::size::Size;
+pub use self::unit::Unit;
+pub use self::value::Value;
 
 #[repr(C)]
 #[derive(Debug)]
@@ -89,30 +93,30 @@ extern "C" {
     pub fn YGNodeStyleGetFlexGrow(node: *const Node) -> c_float;
     pub fn YGNodeStyleSetFlexShrink(node: *mut Node, flex_shrink: c_float);
     pub fn YGNodeStyleGetFlexShrink(node: *const Node) -> c_float;
-    pub fn YGNodeStyleSetFlexBasis(node: *mut Node, flex_basis: c_float);
-    pub fn YGNodeStyleGetFlexBasis(node: *const Node) -> c_float;
+    pub fn YGNodeStyleSetFlexBasis(node: *mut Node, flex_basis: Value);
+    pub fn YGNodeStyleGetFlexBasis(node: *const Node) -> Value;
 
-    pub fn YGNodeStyleSetPosition(node: *mut Node, edge: Edge, position: c_float);
-    pub fn YGNodeStyleGetPosition(node: *const Node, edge: Edge) -> c_float;
-    pub fn YGNodeStyleSetMargin(node: *mut Node, edge: Edge, margin: c_float);
-    pub fn YGNodeStyleGetMargin(node: *const Node, edge: Edge) -> c_float;
-    pub fn YGNodeStyleSetPadding(node: *mut Node, edge: Edge, padding: c_float);
-    pub fn YGNodeStyleGetPadding(node: *const Node, edge: Edge) -> c_float;
+    pub fn YGNodeStyleSetPosition(node: *mut Node, edge: Edge, position: Value);
+    pub fn YGNodeStyleGetPosition(node: *const Node, edge: Edge) -> Value;
+    pub fn YGNodeStyleSetMargin(node: *mut Node, edge: Edge, margin: Value);
+    pub fn YGNodeStyleGetMargin(node: *const Node, edge: Edge) -> Value;
+    pub fn YGNodeStyleSetPadding(node: *mut Node, edge: Edge, padding: Value);
+    pub fn YGNodeStyleGetPadding(node: *const Node, edge: Edge) -> Value;
     pub fn YGNodeStyleSetBorder(node: *mut Node, edge: Edge, border: c_float);
     pub fn YGNodeStyleGetBorder(node: *const Node, edge: Edge) -> c_float;
 
-    pub fn YGNodeStyleSetWidth(node: *mut Node, width: c_float);
-    pub fn YGNodeStyleGetWidth(node: *const Node) -> c_float;
-    pub fn YGNodeStyleSetHeight(node: *mut Node, height: c_float);
-    pub fn YGNodeStyleGetHeight(node: *const Node) -> c_float;
-    pub fn YGNodeStyleSetMinWidth(node: *mut Node, min_width: c_float);
-    pub fn YGNodeStyleGetMinWidth(node: *const Node) -> c_float;
-    pub fn YGNodeStyleSetMinHeight(node: *mut Node, min_height: c_float);
-    pub fn YGNodeStyleGetMinHeight(node: *const Node) -> c_float;
-    pub fn YGNodeStyleSetMaxWidth(node: *mut Node, max_width: c_float);
-    pub fn YGNodeStyleGetMaxWidth(node: *const Node) -> c_float;
-    pub fn YGNodeStyleSetMaxHeight(node: *mut Node, max_height: c_float);
-    pub fn YGNodeStyleGetMaxHeight(node: *const Node) -> c_float;
+    pub fn YGNodeStyleSetWidth(node: *mut Node, width: Value);
+    pub fn YGNodeStyleGetWidth(node: *const Node) -> Value;
+    pub fn YGNodeStyleSetHeight(node: *mut Node, height: Value);
+    pub fn YGNodeStyleGetHeight(node: *const Node) -> Value;
+    pub fn YGNodeStyleSetMinWidth(node: *mut Node, min_width: Value);
+    pub fn YGNodeStyleGetMinWidth(node: *const Node) -> Value;
+    pub fn YGNodeStyleSetMinHeight(node: *mut Node, min_height: Value);
+    pub fn YGNodeStyleGetMinHeight(node: *const Node) -> Value;
+    pub fn YGNodeStyleSetMaxWidth(node: *mut Node, max_width: Value);
+    pub fn YGNodeStyleGetMaxWidth(node: *const Node) -> Value;
+    pub fn YGNodeStyleSetMaxHeight(node: *mut Node, max_height: Value);
+    pub fn YGNodeStyleGetMaxHeight(node: *const Node) -> Value;
 
     pub fn YGNodeLayoutGetLeft(node: *const Node) -> c_float;
     pub fn YGNodeLayoutGetTop(node: *const Node) -> c_float;
