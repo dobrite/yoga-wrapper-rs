@@ -17,6 +17,8 @@ pub use ffi::FlexWrap;
 pub use ffi::JustifyContent;
 pub use ffi::LogLevel;
 pub use ffi::MeasureMode;
+pub use ffi::Unit;
+pub use ffi::Value;
 
 pub use ffi::Node as RawNode;
 pub use ffi::Overflow;
@@ -26,3 +28,12 @@ pub use ffi::Size;
 pub use measure::measure;
 pub use measures::Measures;
 pub use node::Node;
+
+impl From <f32> for Value {
+    fn from(value: f32) -> Self {
+        Value {
+            value: value,
+            unit: Unit::Point
+        }
+    }
+}
