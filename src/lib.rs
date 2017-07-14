@@ -23,6 +23,8 @@ pub use ffi::Overflow;
 pub use ffi::PositionType;
 pub use ffi::PrintOptions;
 pub use ffi::Size;
+pub use ffi::Unit;
+pub use ffi::Value;
 pub use measure::measure;
 pub use measures::Measures;
 pub use node::Node;

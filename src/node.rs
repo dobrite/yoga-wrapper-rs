@@ -352,6 +352,9 @@ impl Node {
 #[cfg(test)]
 mod tests {
     use Context;
+    use Edge;
+    use Unit;
+    use Value;
     use Measures;
     use Node;
     use Size;
@@ -450,6 +453,32 @@ mod tests {
         p1.set_height(1.0);
         p1.set_width(1.0);
         assert_eq!(p1.get_height(), 1.0);
+    }
+
+    #[test]
+    fn set_margin() {
+        let mut p1 = Node::new();
+        p1.set_margin(Edge::All, 1.0);
+        let expected = Value { value: 1.0, unit: Unit::Point };
+        assert_eq!(p1.get_margin(Edge::All), expected);
+    }
+
+    #[test]
+    fn set_margin_auto() {
+        let mut p1 = Node::new();
+        p1.set_margin_auto(Edge::All);
+        let expected = Value { value: ::std::f32::NAN, unit: Unit::Auto };
+        let actual = p1.get_margin(Edge::All);
+        assert_eq!(actual.unit, Unit::Auto);
+        assert!(actual.value.is_nan());
+    }
+
+    #[test]
+    fn set_margin_percent() {
+        let mut p1 = Node::new();
+        p1.set_margin_percent(Edge::All, 10.0);
+        let expected = Value { value: 10.0, unit: Unit::Percent };
+        assert_eq!(p1.get_margin(Edge::All), expected);
     }
 
     #[test]
