@@ -1,7 +1,7 @@
 use context::Context;
 
 use ffi;
-use ffi::{Direction, MeasureMode, Size};
+use ffi::{Direction, MeasureMode, Size, Value};
 use libc::c_void;
 use measure::measure;
 use std;
@@ -55,20 +55,84 @@ impl Node {
         unsafe { ffi::YGNodeStyleGetFlexDirection(self._node) }
     }
 
+    pub fn get_width(&self) -> f32 {
+        unsafe { ffi::YGNodeStyleGetWidth(self._node) }
+    }
+
     pub fn set_width(&mut self, width: f32) {
         unsafe { ffi::YGNodeStyleSetWidth(self._node, width) }
     }
 
-    pub fn get_width(&self) -> f32 {
-        unsafe { ffi::YGNodeStyleGetWidth(self._node) }
+    pub fn set_width_percent(&mut self, width: f32) {
+        unsafe { ffi::YGNodeStyleSetWidthPercent(self._node, width) }
+    }
+
+    pub fn set_width_auto(&mut self) {
+        unsafe { ffi::YGNodeStyleSetWidthAuto(self._node) }
+    }
+
+    pub fn set_min_width(&mut self, min_width: f32) {
+        unsafe { ffi::YGNodeStyleSetMinWidth(self._node, min_width) }
+    }
+
+    pub fn set_min_width_percent(&mut self, min_width: f32) {
+        unsafe { ffi::YGNodeStyleSetMinWidthPercent(self._node, min_width) }
+    }
+
+    pub fn get_min_width(&self) -> f32 {
+        unsafe { ffi::YGNodeStyleGetMinWidth(self._node) }
+    }
+
+    pub fn set_max_width(&mut self, max_width: f32) {
+        unsafe { ffi::YGNodeStyleSetMaxWidth(self._node, max_width) }
+    }
+
+    pub fn set_max_width_percent(&mut self, max_width: f32) {
+        unsafe { ffi::YGNodeStyleSetMaxWidthPercent(self._node, max_width) }
+    }
+
+    pub fn get_max_width(&self, max_width: f32) -> f32 {
+        unsafe { ffi::YGNodeStyleGetMaxWidth(self._node) }
+    }
+
+    pub fn get_height(&self) -> f32 {
+        unsafe { ffi::YGNodeStyleGetHeight(self._node) }
     }
 
     pub fn set_height(&mut self, height: f32) {
         unsafe { ffi::YGNodeStyleSetHeight(self._node, height) }
     }
 
-    pub fn get_height(&self) -> f32 {
-        unsafe { ffi::YGNodeStyleGetHeight(self._node) }
+    pub fn set_height_percent(&mut self, height: f32) {
+        unsafe { ffi::YGNodeStyleSetHeightPercent(self._node, height) }
+    }
+
+    pub fn set_height_auto(&mut self) {
+        unsafe { ffi::YGNodeStyleSetHeightAuto(self._node) }
+    }
+
+    pub fn set_min_height(&mut self, min_height: f32) {
+        unsafe { ffi::YGNodeStyleSetMinHeight(self._node, min_height) }
+    }
+
+    pub fn set_min_height_percent(&mut self, min_height: f32) {
+        unsafe { ffi::YGNodeStyleSetMinHeightPercent(self._node, min_height) }
+    }
+
+    pub fn get_min_height(&self) -> f32 {
+        unsafe { ffi::YGNodeStyleGetMinHeight(self._node) }
+    }
+
+    pub fn set_max_height(&mut self, max_height: f32) {
+        unsafe { ffi::YGNodeStyleSetMaxHeight(self._node, max_height) }
+    }
+
+    pub fn set_max_height_percent(&mut self, max_height: f32) {
+        unsafe { ffi::YGNodeStyleSetMaxHeightPercent(self._node, max_height) }
+    }
+
+    pub fn get_max_height(&self, max_height: f32) -> f32 {
+        unsafe { ffi::YGNodeStyleGetMaxHeight(self._node) }
     }
 
     pub fn calculate_layout(&mut self) {
@@ -205,7 +269,15 @@ impl Node {
         unsafe { ffi::YGNodeStyleSetFlexBasis(self._node, value) }
     }
 
-    pub fn get_margin(&self, edge: ffi::Edge) -> f32 {
+    pub fn set_flex_basis_percent(&mut self, value: f32) {
+        unsafe { ffi::YGNodeStyleSetFlexBasisPercent(self._node, value) }
+    }
+
+    pub fn set_flex_basis_auto(&mut self, value: f32) {
+        unsafe { ffi::YGNodeStyleSetFlexBasisAuto(self._node) }
+    }
+
+    pub fn get_margin(&self, edge: ffi::Edge) -> Value {
         unsafe { ffi::YGNodeStyleGetMargin(self._node, edge) }
     }
 
@@ -213,12 +285,36 @@ impl Node {
         unsafe { ffi::YGNodeStyleSetMargin(self._node, edge, value) }
     }
 
-    pub fn get_padding(&self, edge: ffi::Edge) -> f32 {
+    pub fn set_margin_percent(&mut self, edge: ffi::Edge, value: f32) {
+        unsafe { ffi::YGNodeStyleSetMarginPercent(self._node, edge, value) }
+    }
+
+    pub fn set_margin_auto(&mut self, edge: ffi::Edge) {
+        unsafe { ffi::YGNodeStyleSetMarginAuto(self._node, edge) }
+    }
+
+    pub fn get_padding(&self, edge: ffi::Edge) -> Value {
         unsafe { ffi::YGNodeStyleGetPadding(self._node, edge) }
     }
 
     pub fn set_padding(&mut self, edge: ffi::Edge, value: f32) {
         unsafe { ffi::YGNodeStyleSetPadding(self._node, edge, value) }
+    }
+
+    pub fn set_padding_percent(&mut self, edge: ffi::Edge, value: f32) {
+        unsafe { ffi::YGNodeStyleSetPaddingPercent(self._node, edge, value) }
+    }
+
+    pub fn get_position(&self, edge: ffi::Edge) -> Value {
+        unsafe { ffi::YGNodeStyleGetPosition(self._node, edge) }
+    }
+
+    pub fn set_position(&mut self, edge: ffi::Edge, value: f32) {
+        unsafe { ffi::YGNodeStyleSetPosition(self._node, edge, value) }
+    }
+
+    pub fn set_position_percent(&mut self, edge: ffi::Edge, value: f32) {
+        unsafe { ffi::YGNodeStyleSetPositionPercent(self._node, edge, value) }
     }
 
     pub fn get_border(&self, edge: ffi::Edge) -> f32 {
@@ -227,14 +323,6 @@ impl Node {
 
     pub fn set_border(&mut self, edge: ffi::Edge, value: f32) {
         unsafe { ffi::YGNodeStyleSetBorder(self._node, edge, value) }
-    }
-
-    pub fn get_position(&self, edge: ffi::Edge) -> f32 {
-        unsafe { ffi::YGNodeStyleGetPosition(self._node, edge) }
-    }
-
-    pub fn set_position(&mut self, edge: ffi::Edge, value: f32) {
-        unsafe { ffi::YGNodeStyleSetPosition(self._node, edge, value) }
     }
 
     pub fn set_measure_func(
@@ -264,6 +352,9 @@ impl Node {
 #[cfg(test)]
 mod tests {
     use Context;
+    use Edge;
+    use Unit;
+    use Value;
     use Measures;
     use Node;
     use Size;
@@ -335,22 +426,74 @@ mod tests {
     }
 
     #[test]
+    fn get_width() {
+        let mut p1 = Node::new();
+        assert_eq!(p1.get_width(), 0.0);
+    }
+
+    #[test]
+    fn set_width() {
+        let mut p1 = Node::new();
+        assert_eq!(p1.get_width(), 0.0);
+        p1.set_width(1.0);
+        p1.set_height(1.0);
+        assert_eq!(p1.get_width(), 1.0);
+    }
+
+    #[test]
+    fn get_height() {
+        let mut p1 = Node::new();
+        assert_eq!(p1.get_height(), 0.0);
+    }
+
+    #[test]
+    fn set_height() {
+        let mut p1 = Node::new();
+        assert_eq!(p1.get_height(), 0.0);
+        p1.set_height(1.0);
+        p1.set_width(1.0);
+        assert_eq!(p1.get_height(), 1.0);
+    }
+
+    #[test]
+    fn set_margin() {
+        let mut p1 = Node::new();
+        p1.set_margin(Edge::All, 1.0);
+        let expected = Value { value: 1.0, unit: Unit::Point };
+        assert_eq!(p1.get_margin(Edge::All), expected);
+    }
+
+    #[test]
+    fn set_margin_auto() {
+        let mut p1 = Node::new();
+        p1.set_margin_auto(Edge::All);
+        let expected = Value { value: ::std::f32::NAN, unit: Unit::Auto };
+        let actual = p1.get_margin(Edge::All);
+        assert_eq!(actual.unit, Unit::Auto);
+        assert!(actual.value.is_nan());
+    }
+
+    #[test]
+    fn set_margin_percent() {
+        let mut p1 = Node::new();
+        p1.set_margin_percent(Edge::All, 10.0);
+        let expected = Value { value: 10.0, unit: Unit::Percent };
+        assert_eq!(p1.get_margin(Edge::All), expected);
+    }
+
+    #[test]
     fn get_child() {
         let mut p1 = Node::new();
-
+        let mut c0 = Node::new();
         let mut c1 = Node::new();
-        c1.set_width(1.0);
+        p1.insert_child(&c0, 0);
+        p1.insert_child(&c1, 1);
 
-        let mut c2 = Node::new();
-        c2.set_width(2.0);
+        assert_eq!(p1.get_child(0)._node, c0._node);
+        assert_eq!(p1.get_child(1)._node, c1._node);
 
-        p1.insert_child(&c1, 0);
-        p1.insert_child(&c2, 1);
-
-        assert!(p1.get_child(0).get_width() == 1.0);
-        assert!(p1.get_child(1).get_width() == 2.0);
         p1.free();
+        c0.free();
         c1.free();
-        c2.free();
     }
 }
