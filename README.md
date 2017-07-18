@@ -1,6 +1,4 @@
-A verbatim rust wrapper for [Yoga](https://github.com/facebook/yoga). Probably most likely very unsafe.
-
-Expects the yoga repo to be cloned in `/usr/local/lib/` (see `build.rs`).
+Not much more than a manual bindgen rust wrapper for [Yoga](https://github.com/facebook/yoga). Probably most likely very unsafe.
 
 #### Running the "C" example:
 
